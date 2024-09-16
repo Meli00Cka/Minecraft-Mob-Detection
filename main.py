@@ -12,9 +12,9 @@ def main():
         video_path = input('Please enter the Video path:\n')
         output_path = input('Please enter the Output video path and name (Example: output.mp4):\n')
         
-        display_detections = input('Display real-time results while detecting? [y/n]: ') == 'y'
+        # display_detections = input('Display real-time results while detecting? [y/n]: ') == 'y'
         
-        obj_detection.video_detection(video_path, output_path, display_detections)
+        obj_detection.video_detection(video_path, output_path)
     else:
         obj_detection.rt_detection()
 

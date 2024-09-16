@@ -36,11 +36,12 @@ class minecraft_obj_detection():
         cv2.destroyAllWindows()
 
 
-    def video_detection(self, video_path, output_path, display_detections=True):
-
+    def video_detection(self, video_path, output_path):#, display_detections=True
+        from tqdm import tqdm
+    
         # Open the video file
         cap = cv2.VideoCapture(video_path)
-
+        
         # Check if the video opened successfully
         if not cap.isOpened():
             print("Error: Could not open video.")
@@ -50,28 +51,29 @@ class minecraft_obj_detection():
         frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
         frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
         fps = cap.get(cv2.CAP_PROP_FPS)
+        
+        total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT)) # total number of frames for progress bar
 
         # Define the codec and create a VideoWriter object to save the output video
         fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # Codec for .mp4
         out = cv2.VideoWriter(output_path, fourcc, fps, (frame_width, frame_height))
 
+        with tqdm(total=total_frames, desc="Processing frames") as pbar:
+            while cap.isOpened():
+                ret, frame = cap.read()        
+                if not ret:
+                    break
+                
+                results = self.model(frame, verbose=False)  # detect
 
-        while cap.isOpened():
-            ret, frame = cap.read()        
-            if not ret:
-                break
-            
-            results = self.model(frame, verbose=False) # detect
+                annotated_frame = results[0].plot()  # get the annotated frame
 
-            annotated_frame = results[0].plot()  # get the annotated frame
+                out.write(annotated_frame)  # write the annotated frame to the output
 
-            out.write(annotated_frame) # write the annotated frame to the output
+                pbar.update(1)  # Update the progress bar for each processed frame
 
-            if display_detections:
-                cv2.imshow(self.window_name, annotated_frame) # display the annotated frame
-
-            if cv2.waitKey(10) & 0xFF == ord('q'):
-                break
+                if cv2.waitKey(10) & 0xFF == ord('q'):
+                    break
 
         # Release the video capture and writer objects
         cap.release()
