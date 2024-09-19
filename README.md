@@ -13,7 +13,7 @@ This model is trained on 1800 images, mostly cave images that makes exploring ca
 
 here is a cool video if you want to see the results
 
-[Click to watch the video](https://vimeo.com/1010151614)
+**[Click to watch the video](https://vimeo.com/1010151614)**
 
 <br>
 
@@ -21,7 +21,7 @@ here is a cool video if you want to see the results
 
 To get started, follow these steps:
 
-1. [Clone the repository](https://github.com/Meli00Cka/Minecraft-Mob-Detection/archive/refs/heads/main.zip)
+1. **[Clone the repository](https://github.com/Meli00Cka/Minecraft-Mob-Detection/archive/refs/heads/main.zip)**
 
 2. Navigate to the project directory:
    ```bash
